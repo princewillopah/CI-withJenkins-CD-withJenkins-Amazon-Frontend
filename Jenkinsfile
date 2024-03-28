@@ -4,6 +4,9 @@ pipeline {
         jdk 'jdk17'
         nodejs 'node16'
     }
+     environment {
+         SCANNER_HOME=tool 'my-sonarqube-scanner'
+     }
     stages {
         stage('clean workspace ') {
             steps {
