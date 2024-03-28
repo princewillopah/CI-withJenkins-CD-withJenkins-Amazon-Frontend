@@ -29,7 +29,7 @@ pipeline {
          stage("Quality Gate"){
             steps {
                  script {
-                     waitForQualityGate abortPipeline: false, credentialsId: 'sonarqube-token' 
+                     waitForQualityGate abortPipeline: false, credentialsId: 'SonarQube-Credentials'
                  }
              } 
          }
@@ -46,7 +46,7 @@ pipeline {
           stage("Docker Build & Push"){
              steps{
                  script{
-                    withDockerRegistry(credentialsId: 'dockerhub-credentials', toolName: 'docker'){   
+                    withDockerRegistry(credentialsId: 'dockerhub-cred', toolName: 'my-docker'){   
                         sh "docker build -t amazon-frontend ."
                         sh "docker tag amazon-frontend princewillopah/amazon-frontend:latest "
                         sh "docker push princewillopah/amazon-frontende:latest "
@@ -57,6 +57,11 @@ pipeline {
          stage("TRIVY"){
              steps{
                  sh "trivy image princewillopah/amazon-frontend:latest > trivyimage.txt" 
+             }
+         } 
+          stage("Run container"){
+             steps{
+                 sh "docker run -d --name amazon-frontend -p 3000:3000 princewillopah/amazon-frontende:latest" 
              }
          } 
 
