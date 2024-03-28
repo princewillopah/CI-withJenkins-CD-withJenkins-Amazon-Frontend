@@ -49,7 +49,7 @@ pipeline {
                     withDockerRegistry(credentialsId: 'dockerhub-cred', toolName: 'my-docker'){   
                         sh "docker build -t amazon-frontend ."
                         sh "docker tag amazon-frontend princewillopah/amazon-frontend:latest "
-                        sh "docker push princewillopah/amazon-frontende:latest "
+                        sh "docker push princewillopah/amazon-frontend:latest "
                      }
                  }
              }
@@ -61,7 +61,7 @@ pipeline {
          } 
           stage("Run container"){
              steps{
-                 sh "docker run -d --name amazon-frontend -p 3000:3000 princewillopah/amazon-frontende:latest" 
+                 sh "docker run -d --name amazon-frontend -p 3000:3000 princewillopah/amazon-frontend:latest" 
              }
          } 
 
